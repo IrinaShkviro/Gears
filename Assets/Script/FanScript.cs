@@ -10,7 +10,6 @@ public class FanScript : MonoBehaviour {
 		print("hey");
 		if (other.tag == "Player")
 		{
-			other.GetComponent<PlayerScript>().FanMove(speed);
 		}
 	}
 	void OnTriggerExit(Collider other)
@@ -18,7 +17,6 @@ public class FanScript : MonoBehaviour {
 		print("bye");
 		if (other.tag == "Player")
 		{
-			other.GetComponent<PlayerScript>().FanMove(0);
 		}
 	}
 }

@@ -19,8 +19,6 @@ public class MovePlatform : MonoBehaviour
 	}
 	public MoveType type;
 
-
-
 	private bool isActive;
 	public bool IsActive
 	{
