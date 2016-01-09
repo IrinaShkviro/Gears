@@ -6,14 +6,16 @@ public class CameraScript : MonoBehaviour {
 	public float interpVelocity;
 	//public GameObject target;
 	public Vector3 offset;
+	private GameObject robot;
 	private GameObject target;
 	private Vector3 targetPos;
-	private bool isHuman = false;
+	private bool isHumanFounded = false;
 
 	// Use this for initialization
 	void Start()
 	{
-		target = GameObject.FindGameObjectWithTag("Player");
+		robot = GameObject.FindGameObjectWithTag("Player");
+		target = robot;
 		targetPos = transform.position;
 	}
 	// Update is called once per frame
@@ -32,6 +34,20 @@ public class CameraScript : MonoBehaviour {
 			
 			transform.position = Vector3.Lerp(transform.position, targetPos + offset, 0.25f);
 			
+		}
+	}
+	public void ChangeTarget()
+	{
+		if (target == robot)
+		{
+			Camera.main.orthographicSize = 2;
+			target = GameObject.FindGameObjectWithTag("Human");
+		}
+		else
+		{
+			
+			Camera.main.orthographicSize = 4;
+			target = robot;
 		}
 	}
 }
