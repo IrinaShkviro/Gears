@@ -11,7 +11,7 @@ public class CloudScript : MonoBehaviour
 
 	void OnCollisionExit(Collision other)
 	{
-		if (other.collider.tag == "Player")
+		if (other.collider.tag == "Player" || other.collider.tag == "Human" )
 		{
 			print ("Disabled (collision exit)");
 			cloudCol.enabled = false;
@@ -29,8 +29,9 @@ public class CloudScript : MonoBehaviour
 		}
 		else if (other.collider.tag == "Human")
 		{
-			if (other.transform.position.y - transform.position.y<=0.5f) 
+			if (other.transform.position.y - transform.position.y<=0.15f) 
 			{
+				print ("Disabled(collision stay)");
 				cloudCol.enabled = false;
 			}
 		}

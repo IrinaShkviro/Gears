@@ -6,11 +6,11 @@ public class MovePlatform : MonoBehaviour
 {
 	public List<Vector3> points = new List<Vector3>();
 	public float speed = 0.05f;
-
+	
 	private new Transform transform;
 	private Vector3 nextPoint;
 	private int currentSector;
-
+	
 	public enum MoveType
 	{
 		Once,
@@ -18,14 +18,14 @@ public class MovePlatform : MonoBehaviour
 		Partol
 	}
 	public MoveType type;
-
+	
 	private bool isActive;
 	public bool IsActive
 	{
 		get { return isActive; }
 		set { isActive = value; }
 	}
-
+	
 	public Vector3 GetNextPoint()
 	{
 		float dist = 0;
@@ -63,7 +63,7 @@ public class MovePlatform : MonoBehaviour
 		nextPoint = newPoint;
 		return nextPoint;
 	}
-
+	
 	void Start()
 	{
 		transform = GetComponent<Transform>();
