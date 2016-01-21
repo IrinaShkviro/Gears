@@ -15,7 +15,7 @@ public class Checkpoint : MonoBehaviour {
 
 	void OnTriggerEnter(Collider col) {
 		if (col.tag == "Player") {
-			PlayerSettings.Instance.LastCheck = transform.position;
+			PlayerSettings.Instance.LastCheck = col.transform.position;
 		}
 	}
 }
