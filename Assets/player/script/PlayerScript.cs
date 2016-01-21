@@ -134,6 +134,7 @@ public class PlayerScript : MonoBehaviour {
 			                               playerPos.position.y, 
 			                               playerPos.position.z-0.01f), Quaternion.identity) as GameObject;
 			player.isKinematic = true;
+			playerPos.position = new Vector3 (playerPos.position.x, playerPos.position.y, playerPos.position.z + 2f);
 			script.enabled = false;
 			cameraScript.ChangeTarget();
 		}
@@ -292,6 +293,7 @@ public class PlayerScript : MonoBehaviour {
 
 	public void CanMove()
 	{
+		playerPos.position = new Vector3 (playerPos.position.x, playerPos.position.y, playerPos.position.z - 2f);
 		player.isKinematic = false;
 		player.WakeUp();
 		if (lastCloud)
