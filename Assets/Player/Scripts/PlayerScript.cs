@@ -37,6 +37,7 @@ public class PlayerScript : MonoBehaviour {
 		script = GetComponent<PlayerScript>();
 		pressure = GameObject.FindObjectOfType(typeof(PressureUIScript)) as PressureUIScript;
 		cameraScript = GameObject.FindObjectOfType(typeof(CameraScript)) as CameraScript;
+		PlayerSettings.Instance.SetPlayerPos (playerPos);
 	}
 
 	void Update()

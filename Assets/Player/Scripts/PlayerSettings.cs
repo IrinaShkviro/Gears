@@ -17,4 +17,13 @@ public sealed class PlayerSettings {
 		get { return lastCheck;}
 		set { lastCheck = value;}
 	}
+
+	private Transform playerPos;
+	public void SetPlayerPos(Transform playerPos) {
+		this.playerPos = playerPos;
+	}
+
+	public void Load() {
+		playerPos.position = lastCheck;
+	}
 }
