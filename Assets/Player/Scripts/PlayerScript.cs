@@ -21,15 +21,10 @@ public class PlayerScript : MonoBehaviour {
 	public int timeForJump = 0;
 	private float fanSpeed = 0;
 	public float maxFallSpeed = 0;
-	public float speed = 0;
-	public float jumpForce = 0;
 	private int stopMove = 0;
 	private bool movePlatformRight = false;
 	private bool movePlatformLeft = false;
 
-	private int pressureState = 50;
-	private int pressureChange = 0;
-	
 	void Start ()
 	{
 		player = GetComponent<Rigidbody>();
@@ -37,7 +32,7 @@ public class PlayerScript : MonoBehaviour {
 		script = GetComponent<PlayerScript>();
 		pressure = GameObject.FindObjectOfType(typeof(PressureUIScript)) as PressureUIScript;
 		cameraScript = GameObject.FindObjectOfType(typeof(CameraScript)) as CameraScript;
-		PlayerSettings.Instance.SetPlayerPos (playerPos);
+		PlayerSettings.Instance.SetPlayer (this);
 	}
 
 	void Update()
@@ -65,7 +60,7 @@ public class PlayerScript : MonoBehaviour {
 		}
 		else
 		{
-			player.velocity = new Vector3(move*speed + fanSpeed, player.velocity.y, 0f);
+			player.velocity = new Vector3(move*PlayerSettings.Instance.Speed + fanSpeed, player.velocity.y, 0f);
 		}
 
 		if (jump && player.velocity.y <= 0)
@@ -85,51 +80,14 @@ public class PlayerScript : MonoBehaviour {
 			jump==false && ground && timeForJump<=0)
 		{
 			player.velocity = new Vector3(player.velocity.x, 0f, 0f);
-			player.AddForce(new Vector3(0f,jumpForce,0f));
+			player.AddForce(new Vector3(0f, PlayerSettings.Instance.JumpForce, 0f));
 			jump = true;
 			ground = false;
 			timeForJump = 8;
 		}
 
-		if (Input.GetKeyDown(KeyCode.E))
-		{
-			pressureState+=25;
-		}
-		if (Input.GetKeyDown(KeyCode.Q))
-		{
-			pressureState-=25;
-		}
-		if (pressureState!=50)
-		{
-			if (pressureChange<10)
-			{
-				pressureChange++;
-			}
-			else
-			{
-				pressureChange = 0;
-				pressureState+= (50-pressureState)/(Mathf.Abs(50-pressureState));
-				pressure.SetPressure(pressureState);
-				print (pressureState);
-			}
-			if (pressureState>65)
-			{
-				speed=4;
-				jumpForce = 400;
-			}
-			else if (pressureState<35)
-			{
-				speed = 2;
-				jumpForce = 200;
-			}
-			else
-			{
-				speed = 3;
-				jumpForce = 300;
-			}
-		}
-
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.GetKeyDown(KeyCode.Space) 
+			&& PlayerSettings.Instance.CurPressureState != PlayerSettings.PressureState.High)
 		{
 			human = Instantiate(humanPref, new Vector3(playerPos.position.x + 1.05f,
 			                               playerPos.position.y, 

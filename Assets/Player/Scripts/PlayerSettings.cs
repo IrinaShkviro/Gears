@@ -3,8 +3,32 @@ using System.Collections;
 
 public sealed class PlayerSettings {
 
-	private PlayerSettings(){}
+	private int pressure, maxPressure, minPressure, lowBorder, highBorder;
+	private float speed, jumpForce;
 
+	public enum PressureState
+	{
+		Low,
+		Medium,
+		High
+	}
+	private PressureState curPressureState;
+	public PressureState CurPressureState
+	{
+		get { return curPressureState;}
+	}
+
+	private PlayerSettings(){
+		pressure = 50;
+		lowBorder = 35;
+		highBorder = 65;
+		speed = 3;
+		jumpForce = 300;
+		minPressure = 0;
+		maxPressure = 100;
+		curPressureState = PressureState.Medium;
+	}
+		
 	private static readonly PlayerSettings instance = new PlayerSettings();
 	public static PlayerSettings Instance
 	{
@@ -18,12 +42,45 @@ public sealed class PlayerSettings {
 		set { lastCheck = value;}
 	}
 
-	private Transform playerPos;
-	public void SetPlayerPos(Transform playerPos) {
-		this.playerPos = playerPos;
+	public float Speed
+	{
+		get { return speed;}
+	}
+
+	public float JumpForce
+	{
+		get { return jumpForce;}
+	}
+
+	private PlayerScript player;
+	public void SetPlayer(PlayerScript player) {
+		this.player = player;
 	}
 
 	public void Load() {
-		playerPos.position = lastCheck;
+		player.transform.position = lastCheck;
+	}
+		
+	public void ChangePressure(int change) {
+		pressure += change;
+		if (pressure > maxPressure) {
+			pressure = maxPressure;
+		} else if (pressure < minPressure) {
+			pressure = minPressure;
+		}
+		Debug.Log (pressure);
+		if (pressure > highBorder) {
+			curPressureState = PressureState.High;
+			speed = 4;
+			jumpForce = 400;
+		} else if (pressure < lowBorder) {
+			curPressureState = PressureState.Low;
+			speed = 2;
+			jumpForce = 200;
+		} else {
+			curPressureState = PressureState.Medium;
+			speed = 3;
+			jumpForce = 300;
+		}
 	}
 }
