@@ -52,6 +52,16 @@ public sealed class PlayerSettings {
 		get { return jumpForce;}
 	}
 
+	public int Pressure
+	{
+		get { return pressure; }
+		set 
+		{ 
+			pressure = value;
+			ChangePressure(0);
+		}
+	}
+
 	private PlayerScript player;
 	public void SetPlayer(PlayerScript player) {
 		this.player = player;
@@ -76,7 +86,7 @@ public sealed class PlayerSettings {
 		} else if (pressure < lowBorder) {
 			curPressureState = PressureState.Low;
 			speed = 2;
-			jumpForce = 200;
+			jumpForce = 250;
 		} else {
 			curPressureState = PressureState.Medium;
 			speed = 3;

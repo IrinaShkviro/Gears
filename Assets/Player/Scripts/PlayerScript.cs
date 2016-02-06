@@ -13,7 +13,9 @@ public class PlayerScript : MonoBehaviour {
 	private Transform playerPos;
 
 	private PlayerScript script;
-	private PressureUIScript pressure;
+	private PressureUIScript pressureUI;
+	private int pressureStep;
+	private int pressure;
 
 	private BoxCollider lastCloud;
 	private bool jump;
@@ -30,7 +32,7 @@ public class PlayerScript : MonoBehaviour {
 		player = GetComponent<Rigidbody>();
 		playerPos = GetComponent<Transform>();	
 		script = GetComponent<PlayerScript>();
-		pressure = GameObject.FindObjectOfType(typeof(PressureUIScript)) as PressureUIScript;
+		pressureUI = GameObject.FindObjectOfType(typeof(PressureUIScript)) as PressureUIScript;
 		cameraScript = GameObject.FindObjectOfType(typeof(CameraScript)) as CameraScript;
 		PlayerSettings.Instance.SetPlayer (this);
 	}
@@ -87,7 +89,7 @@ public class PlayerScript : MonoBehaviour {
 		}
 
 		if (Input.GetKeyDown(KeyCode.Space) 
-			&& PlayerSettings.Instance.CurPressureState != PlayerSettings.PressureState.High)
+			&& PlayerSettings.Instance.CurPressureState == PlayerSettings.PressureState.Low)
 		{
 			human = Instantiate(humanPref, new Vector3(playerPos.position.x + 1.05f,
 			                               playerPos.position.y, 
@@ -97,8 +99,26 @@ public class PlayerScript : MonoBehaviour {
 			script.enabled = false;
 			cameraScript.ChangeTarget();
 		}
+		///
+		pressure = PlayerSettings.Instance.Pressure;
+		if (pressure !=50)
+		{
+			pressureStep++;
+			if (pressureStep>=15)
+			{
+				if (pressure<50)
+				{
+					PlayerSettings.Instance.ChangePressure(1);
+				}
+				else
+				{
+					PlayerSettings.Instance.ChangePressure(-1);
+				}
+				pressureStep=0;
+				pressureUI.SetPressure(PlayerSettings.Instance.Pressure);
+			}
+		}
 	}
-
 	void LateUpdate()
 	{
 		CheckForCloudPlatform();
