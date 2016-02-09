@@ -99,25 +99,7 @@ public class PlayerScript : MonoBehaviour {
 			script.enabled = false;
 			cameraScript.ChangeTarget();
 		}
-		///
-		pressure = PlayerSettings.Instance.Pressure;
-		if (pressure !=50)
-		{
-			pressureStep++;
-			if (pressureStep>=15)
-			{
-				if (pressure<50)
-				{
-					PlayerSettings.Instance.ChangePressure(1);
-				}
-				else
-				{
-					PlayerSettings.Instance.ChangePressure(-1);
-				}
-				pressureStep=0;
-				pressureUI.SetPressure(PlayerSettings.Instance.Pressure);
-			}
-		}
+		pressureUI.SetPressure(PlayerSettings.Instance.Pressure);
 	}
 	void LateUpdate()
 	{
