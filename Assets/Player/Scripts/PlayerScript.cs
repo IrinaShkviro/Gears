@@ -77,7 +77,7 @@ public class PlayerScript : MonoBehaviour {
 				timeForJump--;
 			}
 		}	
-
+			
 		if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) &&
 			jump==false && ground && timeForJump<=0)
 		{
@@ -166,13 +166,12 @@ public class PlayerScript : MonoBehaviour {
 			RaycastHit hit;
 			if (Physics.Raycast(check.position, Vector3.down, out hit, smallDistance, layerMask))
 			{
-				BoxCollider col = hit.collider.GetComponent<BoxCollider>();
+				Collider col = hit.collider;
 				if ((col.tag == "CloudPlatform" || col.tag == "CloudMovePlatform") &&
 					player.velocity.y < 0 && col.enabled == false)
 				{
 					col.enabled = true;
-					lastCloud = col;
-					print("Enabled. (ray hit)");
+					lastCloud = col.GetComponent<BoxCollider>();
 				}
 				ground = true;
 				return true;
@@ -205,7 +204,7 @@ public class PlayerScript : MonoBehaviour {
 				if (playerPos.parent != hit.transform)
 				{
 					Collider col;
-					col = hit.collider.GetComponent<BoxCollider>();
+					col = hit.collider;
 					if (col.enabled)
 					{
 						if (col.tag == "HardMovePlatform" || col.tag == "CloudMovePlatform")
