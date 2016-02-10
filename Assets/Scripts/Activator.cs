@@ -17,7 +17,6 @@ public class Activator : MonoBehaviour {
 	}
 
 	protected void OnCollisionEnter(Collision col) {
-		Debug.Log ("Collision in activator");
 		MakeAction ();
 	}
 }

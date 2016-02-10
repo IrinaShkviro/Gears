@@ -9,19 +9,18 @@ public class PressureUIScript : MonoBehaviour {
 	{
 		testShow = gameObject.GetComponent<Text>();
 	}
-	public void SetPressure(int newPressure)
+	public void SetPressure(PlayerSettings.PressureState newPressureState)
 	{
-		if (newPressure > 65)
-		{
-			testShow.text = "High";
-		}
-		else if (newPressure < 35)
-		{
-			testShow.text = "Low";
-		}
-		else
-		{
-			testShow.text = "Normal";
+		switch (newPressureState) {
+			case PlayerSettings.PressureState.High:
+				testShow.text = "High";
+				break;
+			case PlayerSettings.PressureState.Low:
+				testShow.text = "Low";
+				break;
+			default:
+				testShow.text = "Normal";
+				break;
 		}
 	}
 }
