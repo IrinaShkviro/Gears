@@ -89,7 +89,7 @@ public class PlayerScript : MonoBehaviour {
 		}
 
 		if (Input.GetKeyDown(KeyCode.Space) 
-			&& PlayerSettings.Instance.CurPressureState == PlayerSettings.PressureState.Low)
+			&& PlayerSettings.Instance.CurPressureState != PlayerSettings.PressureState.High)
 		{
 			human = Instantiate(humanPref, new Vector3(playerPos.position.x + 1.05f,
 			                               playerPos.position.y, 
@@ -145,7 +145,7 @@ public class PlayerScript : MonoBehaviour {
 			RaycastHit hit;
 			if (Physics.Raycast(check.position, heading, out hit, smallDistance, layerMask))
 			{
-				BoxCollider col = hit.collider.GetComponent<BoxCollider>();
+				Collider col = hit.collider;
 				if (col.tag == "HardMovePlatform")
 				{
 					return true;
@@ -166,14 +166,17 @@ public class PlayerScript : MonoBehaviour {
 			RaycastHit hit;
 			if (Physics.Raycast(check.position, Vector3.down, out hit, smallDistance, layerMask))
 			{
-				Collider col = hit.collider;
-				if ((col.tag == "CloudPlatform" || col.tag == "CloudMovePlatform") &&
-					player.velocity.y < 0 && col.enabled == false)
-				{
-					col.enabled = true;
-					lastCloud = col.GetComponent<BoxCollider>();
-				}
 				ground = true;
+				if (hit.collider.GetComponent<BoxCollider> ()) {
+					BoxCollider col = hit.collider.GetComponent<BoxCollider> ();
+					if ((col.tag == "CloudPlatform" || col.tag == "CloudMovePlatform")
+					&& player.velocity.y < 0 
+					&& ! col.enabled) {
+						col.enabled = true;
+						lastCloud = col;
+					}
+				}
+
 				return true;
 			}
 			else

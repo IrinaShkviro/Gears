@@ -29,6 +29,7 @@ public sealed class PlayerSettings {
 		maxPressure = 100;
 		curPressureState = PressureState.Medium;
 		pressUIScript = GameObject.FindObjectOfType(typeof(PressureUIScript)) as PressureUIScript;
+		pressUIScript.SetPressure (curPressureState);
 	}
 		
 	private static readonly PlayerSettings instance = new PlayerSettings();
@@ -83,15 +84,15 @@ public sealed class PlayerSettings {
 		if (pressure > highBorder) {
 			curPressureState = PressureState.High;
 			speed = 4;
-			jumpForce = 400;
+			jumpForce = 550;
 		} else if (pressure < lowBorder) {
 			curPressureState = PressureState.Low;
 			speed = 2;
-			jumpForce = 250;
+			jumpForce = 300;
 		} else {
 			curPressureState = PressureState.Medium;
 			speed = 3;
-			jumpForce = 300;
+			jumpForce = 400;
 		}
 		pressUIScript.SetPressure (curPressureState);
 	}

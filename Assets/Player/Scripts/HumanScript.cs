@@ -99,19 +99,17 @@ public class HumanScript : MonoBehaviour {
 			RaycastHit hit;
 			if (Physics.Raycast(check.position, Vector3.down,out hit, smallDistance, layerMask))
 			{
-				BoxCollider col = hit.collider.GetComponent<BoxCollider>();
-				if (col.enabled == false)
-				{
-					if (col.tag == "CloudPlatform" || col.tag == "CloudMovePlatform")
-					{
-						if (player.velocity.y<0)
-						{
-							col.enabled = true;
-							lastCloud = col;
-						}
+				ground = true;
+				if (hit.collider.GetComponent<BoxCollider> ()) {
+					BoxCollider col = hit.collider.GetComponent<BoxCollider> ();
+					if (! col.enabled
+					&& (col.tag == "CloudPlatform" || col.tag == "CloudMovePlatform")
+					&& player.velocity.y < 0) {
+						lastCloud = col;
+						lastCloud.enabled = true;
 					}
 				}
-				ground = true;
+
 				return true;
 			}
 			else
@@ -142,7 +140,7 @@ public class HumanScript : MonoBehaviour {
 				if (playerPos.parent != hit.transform)
 				{
 					Collider col;
-					col = hit.collider.GetComponent<BoxCollider>();
+					col = hit.collider;
 					if (col.tag == "CloudMovePlatform")
 					{
 						if (player.velocity.y <0)

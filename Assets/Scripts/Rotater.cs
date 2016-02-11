@@ -10,11 +10,6 @@ public class Rotater : Activator {
 		toRotate.GetComponent<RotateScript>().enabled = false;
 	}
 
-	// Update is called once per frame
-	void Update () {
-
-	}
-
 	public override void MakeAction() {
 		toRotate.GetComponent<RotateScript>().enabled = true;
 	}
