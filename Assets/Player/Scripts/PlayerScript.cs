@@ -16,7 +16,7 @@ public class PlayerScript : MonoBehaviour {
 	private int pressureStep;
 	private int pressure;
 
-	private BoxCollider lastCloud;
+	private MeshCollider lastCloud;
 	private bool jump;
 	public bool ground;
 	public int timeForJump = 0;
@@ -87,7 +87,7 @@ public class PlayerScript : MonoBehaviour {
 		}
 
 		if (Input.GetKeyDown(KeyCode.Space) 
-			&& PlayerSettings.Instance.CurPressureState == PlayerSettings.PressureState.Low)
+			&& PlayerSettings.Instance.CurPressureState != PlayerSettings.PressureState.High)
 		{
 			human = Instantiate(humanPref, new Vector3(playerPos.position.x + 1.05f,
 			                               playerPos.position.y, 
@@ -143,7 +143,7 @@ public class PlayerScript : MonoBehaviour {
 			RaycastHit hit;
 			if (Physics.Raycast(check.position, heading, out hit, smallDistance, layerMask))
 			{
-				BoxCollider col = hit.collider.GetComponent<BoxCollider>();
+				MeshCollider col = hit.collider.GetComponent<MeshCollider>();
 				if (col.tag == "HardMovePlatform")
 				{
 					return true;
@@ -161,23 +161,26 @@ public class PlayerScript : MonoBehaviour {
 		foreach(Transform check in checkers)
 		{
 			Debug.DrawRay(check.position, Vector3.down, Color.green);
-			RaycastHit hit;
-			if (Physics.Raycast(check.position, Vector3.down, out hit, smallDistance, layerMask))
-			{
-				BoxCollider col = hit.collider.GetComponent<BoxCollider>();
-				if ((col.tag == "CloudPlatform" || col.tag == "CloudMovePlatform") &&
-					player.velocity.y < 0 && col.enabled == false)
-				{
-					col.enabled = true;
-					lastCloud = col;
-					print("Enabled. (ray hit)");
-				}
-				ground = true;
-				return true;
-			}
-			else
-			{
+			RaycastHit[] hits;
+			hits = Physics.RaycastAll (check.position, Vector3.down, smallDistance, layerMask);
+			if (hits.Length == 0) {
 				count++;
+			} else {
+				for (int hitIndex = 0; hitIndex < hits.Length; hitIndex++) {
+					RaycastHit hit = hits [hitIndex];
+					Debug.Log ("in raycast");
+					GameObject coll = hit.collider.gameObject;
+					MeshCollider col = hit.collider.GetComponent<MeshCollider>();
+					if ((coll.tag == "CloudPlatform" || coll.tag == "CloudMovePlatform") &&
+						player.velocity.y <= 0 && col.enabled == false)
+					{
+						col.enabled = true;
+						lastCloud = col;
+						print("Enabled. (ray hit)");
+					}
+					ground = true;
+					return true;
+				}
 			}
 		}
 		if (count == checkers.Length)
@@ -198,19 +201,18 @@ public class PlayerScript : MonoBehaviour {
 		{
 			Debug.DrawRay(check.position, Vector3.down, Color.green);
 			RaycastHit hit;
-			if (Physics.Raycast(check.position, Vector3.down, out hit, smallDistance, layerMask))
+			if (Physics.Raycast(check.position, Vector3.down, out hit, 2*smallDistance, layerMask))
 			{
 				if (playerPos.parent != hit.transform)
 				{
-					Collider col;
-					col = hit.collider.GetComponent<BoxCollider>();
+					Collider col = hit.collider;
 					if (col.enabled)
 					{
 						if (col.tag == "HardMovePlatform" || col.tag == "CloudMovePlatform")
 						{
-							if (player.velocity.y < 0)
+							if (player.velocity.y <= 0)
 							{
-								playerPos.position = new Vector3(playerPos.position.x, col.transform.position.y + 1f, playerPos.position.z);
+								//playerPos.position = new Vector3(playerPos.position.x, col.transform.position.y + 1f, playerPos.position.z);
 								player.velocity = new Vector3(player.velocity.x, 0, 0);
 								playerPos.SetParent(col.transform);
 							}
@@ -236,11 +238,10 @@ public class PlayerScript : MonoBehaviour {
 	}
 	private void CheckForLastCloud()
 	{
-		if (playerPos.position.y - lastCloud.transform.position.y <= 0.8f)
+		if (playerPos.position.y - lastCloud.transform.position.y <= 0.08f)
 		{
 			lastCloud.enabled = false;
 			lastCloud = null;
-			print ("Disabled. (last platform)");
 		}
 	}
 

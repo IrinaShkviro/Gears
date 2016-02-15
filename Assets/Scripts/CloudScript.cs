@@ -3,10 +3,10 @@ using System.Collections;
 
 public class CloudScript : MonoBehaviour 
 {
-	private Collider cloudCol;
+	private MeshCollider cloudCol;
 	void Start()
 	{
-		cloudCol = GetComponent<Collider>();
+		cloudCol = GetComponent<MeshCollider>();
 	}
 
 	void OnCollisionExit(Collision other)

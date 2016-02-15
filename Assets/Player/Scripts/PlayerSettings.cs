@@ -23,13 +23,10 @@ public sealed class PlayerSettings {
 		pressure = 50;
 		lowBorder = 35;
 		highBorder = 65;
-		speed = 3;
-		jumpForce = 300;
 		minPressure = 0;
 		maxPressure = 100;
-		curPressureState = PressureState.Medium;
 		pressUIScript = GameObject.FindObjectOfType(typeof(PressureUIScript)) as PressureUIScript;
-		pressUIScript.SetPressure (curPressureState);
+		ChangePressure (0);
 	}
 		
 	private static readonly PlayerSettings instance = new PlayerSettings();
