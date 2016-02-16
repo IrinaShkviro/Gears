@@ -7,7 +7,9 @@ public class OpenerScript : Activator {
 
 	public override void MakeAction() {
 		for (int i = 0; i < toOpen.Length; i++) {
-			toOpen[i].GetComponent<DoorScript> ().Open ();
+			if (toOpen [i]) {
+				toOpen [i].GetComponent<DoorScript> ().Open ();
+			}
 		}
 	}
 }

@@ -168,7 +168,6 @@ public class PlayerScript : MonoBehaviour {
 			} else {
 				for (int hitIndex = 0; hitIndex < hits.Length; hitIndex++) {
 					RaycastHit hit = hits [hitIndex];
-					Debug.Log ("in raycast");
 					GameObject coll = hit.collider.gameObject;
 					MeshCollider col = hit.collider.GetComponent<MeshCollider>();
 					if ((coll.tag == "CloudPlatform" || coll.tag == "CloudMovePlatform") &&
@@ -176,7 +175,6 @@ public class PlayerScript : MonoBehaviour {
 					{
 						col.enabled = true;
 						lastCloud = col;
-						print("Enabled. (ray hit)");
 					}
 					ground = true;
 					return true;
